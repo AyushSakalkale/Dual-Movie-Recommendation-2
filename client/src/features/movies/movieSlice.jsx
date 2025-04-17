@@ -84,11 +84,73 @@ export const fetchAsyncMovieDetail = createAsyncThunk(
   }
 );
 
+export const fetchAsyncSeasonDetail = createAsyncThunk(
+  "movies/fetchAsyncSeasonDetail",
+  async ({ id, seasonNumber }) => {
+    try {
+      const response = await movieapi.get(
+        `tv/${id}/season/${seasonNumber}?api_key=041afab09a0c3f7eef21c8fc4a9ce1a3&append_to_response=credits`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching season details:", error);
+      throw error;
+    }
+  }
+);
+
+export const fetchAsyncTrending = createAsyncThunk(
+  "movies/fetchAsyncTrending",
+  async (mediaType = "all") => {
+    try {
+      const promises = [];
+      if (mediaType === "all" || mediaType === "movie") {
+        promises.push(
+          movieapi.get(`trending/movie/week?api_key=041afab09a0c3f7eef21c8fc4a9ce1a3`)
+        );
+      }
+      if (mediaType === "all" || mediaType === "tv") {
+        promises.push(
+          movieapi.get(`trending/tv/week?api_key=041afab09a0c3f7eef21c8fc4a9ce1a3`)
+        );
+      }
+      
+      const results = await Promise.all(promises);
+      const trending = {
+        movies: mediaType === "all" || mediaType === "movie" ? results[0].data : null,
+        shows: mediaType === "all" || mediaType === "tv" ? results[mediaType === "all" ? 1 : 0].data : null
+      };
+      return trending;
+    } catch (error) {
+      console.error("Error fetching trending:", error);
+      throw error;
+    }
+  }
+);
+
+export const fetchAsyncActorDetails = createAsyncThunk(
+  "movies/fetchAsyncActorDetails",
+  async (id) => {
+    try {
+      const response = await movieapi.get(
+        `person/${id}?api_key=041afab09a0c3f7eef21c8fc4a9ce1a3&append_to_response=combined_credits`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching actor details:", error);
+      throw error;
+    }
+  }
+);
+
 const initialState = {
   movies: {},
   shows: {},
   selectMovieOrShow: {},
   recommendations: {},
+  selectedSeason: {},
+  trending: { movies: null, shows: null },
+  selectedActor: {},
 };
 
 const movieSlice = createSlice({
@@ -100,6 +162,9 @@ const movieSlice = createSlice({
     // },==>part of asyncmovies
     removeSelectedMovieOrShow: (state) => {
       state.selectMovieOrShow = {};
+    },
+    removeSelectedSeason: (state) => {
+      state.selectedSeason = {};
     },
   },
   extraReducers: (builder) => {
@@ -127,10 +192,22 @@ const movieSlice = createSlice({
         console.log("Fetched Successfully");
         return {...state, selectMovieOrShow: payload};
       })
+      .addCase(fetchAsyncSeasonDetail.fulfilled, (state, {payload}) => {
+        console.log("Season details fetched successfully");
+        return {...state, selectedSeason: payload};
+      })
       .addCase(fetchAsyncRecommendations.fulfilled, (state, {payload}) => {
         console.log("Recommendations fetched successfully");
         console.log(payload.recommendations);
         return {...state, recommendations: payload.recommendations};
+      })
+      .addCase(fetchAsyncTrending.fulfilled, (state, {payload}) => {
+        console.log("Trending content fetched successfully");
+        return {...state, trending: payload};
+      })
+      .addCase(fetchAsyncActorDetails.fulfilled, (state, {payload}) => {
+        console.log("Actor details fetched successfully");
+        return {...state, selectedActor: payload};
       });
   },
 });
@@ -154,9 +231,11 @@ export const fetchAsyncRecommendations = createAsyncThunk(
   }
 );
 
-export const {removeSelectedMovieOrShow} = movieSlice.actions;
+export const {removeSelectedMovieOrShow, removeSelectedSeason} = movieSlice.actions;
 export const getAllMovies = (state) => state.movies.movies;
 export const getAllShows = (state) => state.movies.shows;
 export const getSelectedMovieOrShow = (state) => state.movies.selectMovieOrShow;
 export const getRecommendations = (state) => state.movies.recommendations;
+export const getTrending = (state) => state.movies.trending;
+export const getSelectedActor = (state) => state.movies.selectedActor;
 export default movieSlice.reducer;

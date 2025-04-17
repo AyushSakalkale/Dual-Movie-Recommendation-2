@@ -1,0 +1,248 @@
+.actor-detail-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .actor-header {
+    position: relative;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    .actor-backdrop {
+      position: relative;
+      height: 300px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      .backdrop-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9));
+      }
+    }
+
+    .actor-header-content {
+      position: relative;
+      display: flex;
+      padding: 2rem;
+      z-index: 1;
+
+      .actor-profile {
+        width: 200px;
+        height: 300px;
+        margin-right: 2rem;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .no-image {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #333;
+          color: white;
+          font-size: 5rem;
+          font-weight: bold;
+        }
+      }
+
+      .actor-info {
+        flex: 1;
+        color: white;
+
+        h1 {
+          font-size: 2.5rem;
+          margin-bottom: 1rem;
+        }
+
+        .actor-meta {
+          display: flex;
+          gap: 1.5rem;
+          margin-bottom: 1.5rem;
+          font-size: 1rem;
+
+          span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            i {
+              color: #ffd700;
+            }
+          }
+        }
+
+        .actor-biography {
+          h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+          }
+
+          p {
+            line-height: 1.6;
+            opacity: 0.9;
+          }
+        }
+      }
+    }
+  }
+
+  .actor-content {
+    .popular-movies, .popular-shows {
+      color: white;
+      margin-bottom: 2rem;
+
+      h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #007bff;
+      }
+
+      .items-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1.5rem;
+
+        .item-card {
+          cursor: pointer;
+          border-radius: 12px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.05);
+          overflow: hidden;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s ease, border-color 0.3s ease;
+        
+          &:hover {
+            transform: translateY(-5px);
+            border-color: #007bff;
+          }
+
+          .item-poster {
+            position: relative;
+            padding-top: 150%;
+            overflow: hidden;
+
+            img {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+
+            .no-image {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background-color: #333;
+              color: white;
+              font-size: 2rem;
+              font-weight: bold;
+            }
+          }
+
+          .item-info {
+            padding: 1rem;
+
+            h3 {
+              margin: 0;
+              font-size: 1rem;
+              font-weight: 600;
+              margin-bottom: 0.5rem;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              color: white;
+            }
+
+            .item-meta {
+              display: flex;
+              justify-content: space-between;
+              font-size: 0.9rem;
+              color: #aaa;
+
+              .rating {
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+
+                i {
+                  color: #ffd700;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .loading {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+    color: #666;
+  }
+}
+
+@media (max-width: 768px) {
+  .actor-detail-container {
+    padding: 1rem;
+
+    .actor-header {
+      .actor-header-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        .actor-profile {
+          width: 150px;
+          height: 225px;
+          margin-right: 0;
+          margin-bottom: 1rem;
+        }
+
+        .actor-info {
+          h1 {
+            font-size: 2rem;
+          }
+
+          .actor-meta {
+            justify-content: center;
+            flex-wrap: wrap;
+          }
+        }
+      }
+    }
+
+    .actor-content {
+      .popular-movies, .popular-shows {
+        .items-grid {
+          grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+          gap: 1rem;
+        }
+      }
+    }
+  }
+} 

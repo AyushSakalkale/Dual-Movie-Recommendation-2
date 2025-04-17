@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import "./moviecard.scss";
+
 const MovieCardRecommended = (props) => {
   const {data} = props;
   const movie_id = data.imdbID;

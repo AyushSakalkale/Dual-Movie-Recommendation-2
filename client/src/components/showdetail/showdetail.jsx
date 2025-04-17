@@ -1,188 +1,4 @@
-// import React, {useEffect} from "react";
-// import "./showdetail.scss";
-// import {useParams} from "react-router";
-// import {useDispatch, useSelector} from "react-redux";
-// import {
-//   fetchAsyncShowDetail,
-//   getSelectedMovieOrShow,
-//   removeSelectedMovieOrShow,
-// } from "../../features/movies/movieSlice";
-
-// const ShowDetail = () => {
-//   const {imdbID} = useParams();
-//   const dispatch = useDispatch();
-//   const data = useSelector(getSelectedMovieOrShow);
-//   console.log(data);
-
-//   useEffect(() => {
-//     dispatch(fetchAsyncShowDetail(imdbID));
-//     return () => {
-//       dispatch(removeSelectedMovieOrShow());
-//     };
-//   }, [dispatch, imdbID]);
-
-//   return (
-//     <div className="movie-section">
-//       {Object.keys(data).length === 0 ? (
-//         <div>...Loading</div>
-//       ) : (
-//         <>
-//           <div className="section-left">
-//             <div className="movie-title">{data.original_name}</div>
-//             <div className="movie-rating">
-//               <span>
-//                 IMDB Rating <i className="fa fa-star"></i> :{" "}
-//                 {data.external_ids.imdb_id}
-//               </span>
-//               <span>
-//                 IMDB Votes <i className="fa fa-thumbs-up"></i> :{" "}
-//                 {data.vote_average}
-//               </span>
-//               <span>
-//                 Runtime <i className="fa fa-film"></i> : {data.runtime}
-//               </span>
-//               <span>
-//                 Year <i className="fa fa-calendar"></i> : {data.first_air_date}
-//               </span>
-//             </div>
-//             <div className="movie-plot">{data.overview}</div>
-//             <div className="movie-info">
-//               <div>
-//                 <span>Director</span>
-//                 <span>{data.created_by[0].name}</span>
-//               </div>
-//               <div>
-//                 <span>Stars</span>
-//                 <span>{data.Actors}</span>
-//               </div>
-//               <div>
-//                 <span>Generes</span>
-//                 <span>{data.genre[0].name}</span>
-//               </div>
-//               <div>
-//                 <span>Languages</span>
-//                 <span>{data.languages[0]}</span>
-//               </div>
-//             </div>
-//           </div>
-//           <div className="section-right">
-//             <img src={data.backdrop_path} alt={data.original_name} />
-//           </div>
-//         </>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default ShowDetail;
-
-// import React, {useEffect, useState} from "react";
-// import "./showdetail.scss";
-// import {useParams} from "react-router";
-// import {useDispatch, useSelector} from "react-redux";
-// import {
-//   fetchAsyncShowDetail,
-//   getSelectedMovieOrShow,
-//   removeSelectedMovieOrShow,
-// } from "../../features/movies/movieSlice";
-
-// const ShowDetail = () => {
-//   const {imdbID} = useParams();
-//   const dispatch = useDispatch();
-//   const data = useSelector(getSelectedMovieOrShow);
-//   const [selectedSeason, setSelectedSeason] = useState(null);
-
-//   useEffect(() => {
-//     dispatch(fetchAsyncShowDetail(imdbID));
-//     return () => {
-//       dispatch(removeSelectedMovieOrShow());
-//     };
-//   }, [dispatch, imdbID]);
-
-//   const handleSeasonClick = (season) => {
-//     setSelectedSeason(season);
-//   };
-
-//   if (Object.keys(data).length === 0) {
-//     return <div>...Loading</div>;
-//   }
-
-//   return (
-//     <div className="movie-section">
-//       <div className="section-left glass-effect">
-//         <h1 className="movie-title">{data.name}</h1>
-//         <div className="movie-rating">
-//           <span>
-//             <i className="fa fa-star"></i> IMDB ID: {data.external_ids.imdb_id}
-//           </span>
-//           <span>
-//             <i className="fa fa-thumbs-up"></i> Rating: {data.vote_average}
-//           </span>
-//           <span>
-//             <i className="fa fa-calendar"></i> Year: {data.first_air_date}
-//           </span>
-//         </div>
-//         <div className="movie-plot">{data.overview}</div>
-//         <div className="movie-info">
-//           <div>
-//             <span>Director:</span>{" "}
-//             <span>{data.created_by[0]?.name || "N/A"}</span>
-//           </div>
-//           <div>
-//             <span>Genres:</span>{" "}
-//             <span>{data.genres.map((genre) => genre.name).join(", ")}</span>
-//           </div>
-//           <div>
-//             <span>Languages:</span> <span>{data.languages.join(", ")}</span>
-//           </div>
-//         </div>
-//         <div className="seasons">
-//           <h2>Seasons</h2>
-//           <div className="season-list">
-//             {data.seasons.map((season) => (
-//               <div
-//                 key={season.id}
-//                 className="season-card glass-effect"
-//                 onClick={() => handleSeasonClick(season)}
-//               >
-//                 <img
-//                   src={`https://image.tmdb.org/t/p/w500${season.poster_path}`}
-//                   alt={season.name}
-//                   className="season-poster"
-//                 />
-//                 <h3>{season.name}</h3>
-//                 <p>Episodes: {season.episode_count}</p>
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </div>
-//       <div className="section-right">
-//         <img
-//           src={`https://image.tmdb.org/t/p/w500${data.backdrop_path}`}
-//           alt={data.name}
-//         />
-//       </div>
-
-//       {selectedSeason && (
-//         <div className="season-details glass-effect">
-//           <h2>{selectedSeason.name}</h2>
-//           <p>Air Date: {selectedSeason.air_date || "N/A"}</p>
-//           <p>Episodes: {selectedSeason.episode_count}</p>
-//           <ul>
-//             {Array.from({length: selectedSeason.episode_count}, (_, i) => (
-//               <li key={i}>Episode {i + 1}</li>
-//             ))}
-//           </ul>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default ShowDetail;
-
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import "./showdetail.scss";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
@@ -195,9 +11,12 @@ import {
 const ShowDetail = () => {
   const dispatch = useDispatch();
   const data = useSelector(getSelectedMovieOrShow);
-  console.log(data);
   const navigate = useNavigate();
   const {imdbID} = useParams();
+  const [activeTab, setActiveTab] = useState("overview");
+  const [cast, setCast] = useState([]);
+  const [crew, setCrew] = useState([]);
+
   useEffect(() => {
     dispatch(fetchAsyncShowDetail(imdbID));
     return () => {
@@ -205,36 +24,201 @@ const ShowDetail = () => {
     };
   }, [dispatch, imdbID]);
 
+  useEffect(() => {
+    if (data.credits) {
+      setCast(data.credits.cast.slice(0, 10));
+      setCrew(data.credits.crew.slice(0, 10));
+    }
+  }, [data]);
+
   if (Object.keys(data).length === 0) {
-    return <div>Loading...</div>;
+    return <div className="loading">Loading...</div>;
   }
-  console.log("this is imdb id" + imdbID);
-  const handleSeasonClick = (imdbID, seasonId) => {
-    navigate(`/show/${imdbID}/season/${seasonId}`);
+
+  const handleSeasonClick = (id, seasonNumber) => {
+    navigate(`/show/${id}/season/${seasonNumber}`);
+  };
+
+  // Handle actor click
+  const handleActorClick = (actorId) => {
+    navigate(`/actor/${actorId}`);
+  };
+
+  // Format date
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   };
 
   return (
-    <div className="movie-section">
-      <div className="section-left glass-effect">
-        <h1>{data.name}</h1>
-        <p>{data.overview}</p>
-        <div className="seasons">
-          <h2>Seasons</h2>
-          <div className="season-list">
-            {data.seasons.map((season) => (
-              <div
-                key={season.id}
-                className="season-card glass-effect"
-                onClick={() => handleSeasonClick(imdbID, season.id)}
-              >
-                <img
-                  src={`https://image.tmdb.org/t/p/w500${season.poster_path}`}
-                  alt={season.name}
-                />
-                <h3>{season.name}</h3>
-              </div>
-            ))}
+    <div className="show-detail-container">
+      <div className="show-header">
+        <div className="show-backdrop" style={{
+          backgroundImage: `url(https://image.tmdb.org/t/p/original${data.backdrop_path})`
+        }}>
+          <div className="backdrop-overlay"></div>
+        </div>
+        <div className="show-header-content">
+          <div className="show-poster">
+            <img
+              src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
+              alt={data.name}
+            />
           </div>
+          <div className="show-info">
+            <h1>{data.name}</h1>
+            <div className="show-meta">
+              <span>
+                <i className="fa fa-star"></i> {data.vote_average?.toFixed(1)}
+              </span>
+              <span>
+                <i className="fa fa-calendar"></i> {formatDate(data.first_air_date)}
+              </span>
+              <span>
+                <i className="fa fa-film"></i> {data.number_of_seasons} Seasons
+              </span>
+              <span>
+                <i className="fa fa-clock"></i> {data.episode_run_time?.[0]} min/episode
+              </span>
+            </div>
+            <div className="show-genres">
+              {data.genres?.map((genre) => (
+                <span key={genre.id} className="genre-tag">
+                  {genre.name}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="show-content">
+        <div className="tabs">
+          <button
+            className={activeTab === "overview" ? "active" : ""}
+            onClick={() => setActiveTab("overview")}
+          >
+            Overview
+          </button>
+          <button
+            className={activeTab === "cast" ? "active" : ""}
+            onClick={() => setActiveTab("cast")}
+          >
+            Cast & Crew
+          </button>
+          <button
+            className={activeTab === "seasons" ? "active" : ""}
+            onClick={() => setActiveTab("seasons")}
+          >
+            Seasons
+          </button>
+        </div>
+
+        <div className="tab-content">
+          {activeTab === "overview" && (
+            <div className="overview-section">
+              <h2>Overview</h2>
+              <p>{data.overview}</p>
+              <div className="additional-info">
+                <div className="info-item">
+                  <h3>Status</h3>
+                  <p>{data.status}</p>
+                </div>
+                <div className="info-item">
+                  <h3>Original Language</h3>
+                  <p>{data.original_language?.toUpperCase()}</p>
+                </div>
+                <div className="info-item">
+                  <h3>Network</h3>
+                  <p>{data.networks?.[0]?.name || "N/A"}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "cast" && (
+            <div className="cast-section">
+              <h2>Cast</h2>
+              <div className="cast-grid">
+                {cast.map((actor) => (
+                  <div 
+                    key={actor.id} 
+                    className="cast-card"
+                    onClick={() => handleActorClick(actor.id)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <div className="cast-image">
+                      {actor.profile_path ? (
+                        <img
+                          src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
+                          alt={actor.name}
+                        />
+                      ) : (
+                        <div className="no-image">{actor.name.charAt(0)}</div>
+                      )}
+                    </div>
+                    <div className="cast-info">
+                      <div className="cast-name">{actor.name}</div>
+                      <div className="cast-character">{actor.character}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <h2>Crew</h2>
+              <div className="crew-grid">
+                {crew.map((person, index) => (
+                  <div key={`${person.id}-${index}`} className="crew-card">
+                    <div className="crew-info">
+                      <div className="crew-name">{person.name}</div>
+                      <div className="crew-job">{person.job}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === "seasons" && (
+            <div className="seasons-section">
+              <h2>Seasons</h2>
+              <div className="seasons-grid">
+                {data.seasons?.map((season) => (
+                  <div
+                    key={season.id}
+                    className="season-card"
+                    onClick={() => handleSeasonClick(data.id, season.season_number)}
+                  >
+                    <div className="season-poster">
+                      {season.poster_path ? (
+                        <img
+                          src={`https://image.tmdb.org/t/p/w185${season.poster_path}`}
+                          alt={season.name}
+                        />
+                      ) : (
+                        <div className="no-image">{season.name.charAt(0)}</div>
+                      )}
+                    </div>
+                    <div className="season-info">
+                      <h3>{season.name}</h3>
+                      <div className="season-meta">
+                        <span>
+                          {season.episode_count} Episodes
+                        </span>
+                        <span>
+                          {season.air_date ? season.air_date.split("-")[0] : "TBA"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

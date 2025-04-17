@@ -16,4 +16,24 @@ body {
 }
 .container {
   margin: 0px 40px;
+  padding-top: 20px;
+  min-height: calc(100vh - 72px - 60px);
+}
+
+.section-header {
+  margin-bottom: 2rem;
+  
+  h1, h2 {
+    font-size: 2rem;
+    color: $font-primary;
+    margin-bottom: 1rem;
+  }
+}
+
+.content-section {
+  margin-bottom: 3rem;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
 }

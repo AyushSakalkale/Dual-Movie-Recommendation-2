@@ -3,12 +3,49 @@
 .movie-list,
 .show-list,
 .recommendation-list {
-  margin: 20px 0px;
+  margin: 3rem 0;
+  
   h2 {
-    color: $font-secondary;
-    margin-bottom: 10px;
-    font-weight: 400;
+    font-size: 2rem;
+    color: $font-primary;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
   }
+}
+
+.movie-container {
+  margin: 0 -10px; // Compensate for card margins
+  
+  .slick-slide {
+    padding: 0 10px;
+  }
+  
+  .slick-track {
+    display: flex;
+    align-items: stretch;
+  }
+  
+  .slick-slide > div {
+    height: 100%;
+  }
+}
+
+// Loading state
+.loading {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: $font-primary;
+}
+
+// Error state
+.movies-error,
+.shows-error,
+.recommendations-error {
+  text-align: center;
+  padding: 2rem;
+  color: #ff6b6b;
+  font-size: 1.1rem;
 }
 
 // .movie-container {
