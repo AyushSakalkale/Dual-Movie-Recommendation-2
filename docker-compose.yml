@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5000"
+    environment:
+      - FLASK_ENV=development
+      - TMDB_API_KEY=041afab09a0c3f7eef21c8fc4a9ce1a3
+    volumes:
+      - ./server:/app
+    networks:
+      - movie-network
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    networks:
+      - movie-network
+networks:
+  movie-network:
+    driver: bridge

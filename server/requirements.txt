@@ -1,0 +1,8 @@
+flask
+pandas
+numpy
+scikit-learn
+requests
+fuzzywuzzy
+python-Levenshtein
+flask_cors

@@ -1,0 +1,4 @@
+node_modules
+movie_data.pkl
+movie_reccmovie_data.pkl
+*.pkl
